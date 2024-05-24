@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import domain.RequestState
 import domain.ToDoTask
 import presentation.components.ErrorScreen
@@ -39,6 +40,10 @@ class HomeScreen : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
+        val viewModel = getScreenModel<HomeViewModel>()
+        val activeTasks by viewModel.activeTasks
+        val completedTasks by viewModel.completedTasks
+
         Scaffold(
             topBar = {
                 CenterAlignedTopAppBar(title = { Text(text = "Home") })
@@ -66,14 +71,14 @@ class HomeScreen : Screen {
             ) {
                 DisplayTasks(
                     modifier = Modifier.weight(1f),
-                    tasks = RequestState.Idle,
+                    tasks = activeTasks,
                     onSelect = { selectedTask -> },
                     onFavorite = { task, isFavorite -> },
                     onComplete = { task, completed -> })
                 Spacer(modifier = Modifier.height(24.dp))
                 DisplayTasks(
                     modifier = Modifier.weight(1f),
-                    tasks = RequestState.Idle,
+                    tasks = completedTasks,
                     showActive = false,
                     onComplete = { task, completed -> },
                     onDelete = { task -> }
