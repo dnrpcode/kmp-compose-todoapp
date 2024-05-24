@@ -13,6 +13,7 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import presentation.screen.home.HomeScreen
 import presentation.screen.home.HomeViewModel
+import presentation.screen.task.TaskViewModel
 
 val lightRedColor = Color(0xFFF57D88)
 val darkRedColor = Color(0xFF770008)
@@ -48,7 +49,7 @@ fun App() {
 val mongoModule = module {
     single { MongoDB() }
     factory { HomeViewModel(get()) }
-//    factory { TaskViewModel(get()) }
+    factory { TaskViewModel(get()) }
 }
 
 fun initializeKoin() {
