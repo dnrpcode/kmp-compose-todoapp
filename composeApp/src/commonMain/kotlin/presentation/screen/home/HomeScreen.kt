@@ -30,16 +30,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.RequestState
+import domain.TaskAction
 import domain.ToDoTask
 import presentation.components.ErrorScreen
 import presentation.components.LoadingScreen
 import presentation.components.TaskView
+import presentation.screen.task.TaskScreen
 
 class HomeScreen : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
         val viewModel = getScreenModel<HomeViewModel>()
         val activeTasks by viewModel.activeTasks
         val completedTasks by viewModel.completedTasks
@@ -50,7 +55,9 @@ class HomeScreen : Screen {
             },
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = { },
+                    onClick = {
+                        navigator.push(TaskScreen())
+                    },
                     shape = RoundedCornerShape(size = 12.dp)
                 ) {
                     Icon(
@@ -72,16 +79,34 @@ class HomeScreen : Screen {
                 DisplayTasks(
                     modifier = Modifier.weight(1f),
                     tasks = activeTasks,
-                    onSelect = { selectedTask -> },
-                    onFavorite = { task, isFavorite -> },
-                    onComplete = { task, completed -> })
+                    onSelect = { selectedTask ->
+                        navigator.push(TaskScreen(selectedTask))
+                    },
+                    onFavorite = { task, isFavorite ->
+                        viewModel.setAction(
+                            action = TaskAction.SetFavorite(task, isFavorite)
+                        )
+                    },
+                    onComplete = { task, completed ->
+                        viewModel.setAction(
+                            action = TaskAction.SetCompleted(task, completed)
+                        )
+                    })
                 Spacer(modifier = Modifier.height(24.dp))
                 DisplayTasks(
                     modifier = Modifier.weight(1f),
                     tasks = completedTasks,
                     showActive = false,
-                    onComplete = { task, completed -> },
-                    onDelete = { task -> }
+                    onComplete = { task, completed ->
+                        viewModel.setAction(
+                            action = TaskAction.SetCompleted(task, completed)
+                        )
+                    },
+                    onDelete = { task ->
+                        viewModel.setAction(
+                            action = TaskAction.Delete(task)
+                        )
+                    }
                 )
             }
         }
@@ -137,7 +162,7 @@ fun DisplayTasks(
         )
     }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Text(
             modifier = Modifier.padding(horizontal = 12.dp),
             text = if (showActive) "Active Task" else "Completed Task",
