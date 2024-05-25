@@ -6,5 +6,19 @@ plugins {
     alias(libs.plugins.jetbrainsCompose) apply false
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
-    alias(libs.plugins.realm.plugin) apply false
+//    alias(libs.plugins.realm.plugin) apply false
+//    id(libs.plugins.realm.get().pluginId)
+//    id(libs.plugins.realm.plugin.get().pluginId)
+}
+
+
+//buildscript {
+//    dependencies {
+//        classpath(libs.plugins.realm)
+//    }
+//}
+buildscript {
+    dependencies {
+        classpath(libs.realm.plugin)
+    }
 }

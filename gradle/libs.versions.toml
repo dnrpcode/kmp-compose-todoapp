@@ -15,7 +15,7 @@ junit = "4.13.2"
 kotlin = "2.0.0"
 voyager = "1.0.0"
 koin = "3.5.3"
-realm = "1.13.0"
+realm = "2.0.0-SNAPSHOT"
 coroutines = "1.8.0"
 stately = "2.0.5"
 
@@ -41,6 +41,7 @@ voyager-kodein = { module = "cafe.adriel.voyager:voyager-kodein", version.ref = 
 voyager-rxjava = { module = "cafe.adriel.voyager:voyager-rxjava", version.ref = "voyager" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 mongodb-realm = { module = "io.realm.kotlin:library-base", version.ref = "realm"}
+realm-plugin = { module = "io.realm.kotlin:gradle-plugin", version.ref = "realm" }
 kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 stately-common = { module = "co.touchlab:stately-common", version.ref = "stately" }
 
