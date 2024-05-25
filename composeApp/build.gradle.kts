@@ -45,7 +45,7 @@ kotlin {
             implementation(libs.voyager.koin)
             implementation(libs.koin.core)
 
-            implementation(libs.mongodb.realm)
+            implementation(libs.realm.base)
             implementation(libs.kotlin.coroutines)
             implementation(libs.stately.common)
         }
