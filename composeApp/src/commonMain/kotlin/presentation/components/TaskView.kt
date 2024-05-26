@@ -51,11 +51,10 @@ fun TaskView(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                modifier = Modifier.alpha(if (showActive) 1f else 0.5f),
+                modifier = Modifier.alpha(if (task.completed) 0.5f else 1f),
                 text = task.title,
                 fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-                textDecoration = if (showActive) TextDecoration.None
-                else TextDecoration.LineThrough
+                textDecoration = if (task.completed) TextDecoration.LineThrough else TextDecoration.None
             )
         }
         IconButton(
