@@ -1,9 +1,12 @@
 package presentation.screen.task
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -12,7 +15,9 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,9 +34,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import domain.TaskAction
 import domain.ToDoTask
 
-const val DEFAULT_TITLE = "Enter the Title"
-const val DEFAULT_DESCRIPTION = "Add some description"
-
 data class TaskScreen(val task: ToDoTask? = null) : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -39,26 +41,17 @@ data class TaskScreen(val task: ToDoTask? = null) : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = getScreenModel<TaskViewModel>()
         var currentTitle by remember {
-            mutableStateOf(task?.title ?: DEFAULT_TITLE)
+            mutableStateOf(task?.title ?: "")
         }
         var currentDescription by remember {
-            mutableStateOf(task?.description ?: DEFAULT_DESCRIPTION)
+            mutableStateOf(task?.description ?: "")
         }
+        val isAdd = task == null
 
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = {
-                        BasicTextField(
-                            textStyle = TextStyle(
-                                color = MaterialTheme.colorScheme.onSurface,
-                                fontSize = MaterialTheme.typography.titleLarge.fontSize
-                            ),
-                            singleLine = true,
-                            value = currentTitle,
-                            onValueChange = { currentTitle = it }
-                        )
-                    },
+                    title = { Text(if (isAdd) "Add Task" else "Update Task") },
                     navigationIcon = {
                         IconButton(onClick = { navigator.pop() }) {
                             Icon(
@@ -105,7 +98,7 @@ data class TaskScreen(val task: ToDoTask? = null) : Screen {
                 }
             }
         ) { padding ->
-            BasicTextField(
+            Column (
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(all = 24.dp)
@@ -113,13 +106,35 @@ data class TaskScreen(val task: ToDoTask? = null) : Screen {
                         top = padding.calculateTopPadding(),
                         bottom = padding.calculateBottomPadding()
                     ),
-                textStyle = TextStyle(
-                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                    color = MaterialTheme.colorScheme.onSurface
-                ),
-                value = currentDescription,
-                onValueChange = { description -> currentDescription = description }
-            )
+            ) {
+                OutlinedTextField (
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = currentTitle,
+                    onValueChange = { currentTitle = it },
+                    singleLine = true,
+                    label = { Text(text = "Title") },
+                    placeholder = { Text("Enter the Title") },
+                    textStyle = TextStyle(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize
+                    ),
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                OutlinedTextField (
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = currentDescription,
+                    onValueChange = { currentDescription = it },
+                    label = { Text(text = "Description") },
+                    placeholder = { Text("Enter the Description") },
+                    textStyle = TextStyle(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize
+                    ),
+                )
+            }
+
         }
     }
 }
