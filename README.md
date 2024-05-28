@@ -23,5 +23,7 @@ This is my first project to learn building applications with Compose Kotlin Mult
 
 🍏 **IOS:**
 
-https://github.com/dnrpcode/kmp-compose-todoapp/assets/109610332/f54c4029-aaa7-40a2-97bb-aa8a32d071aa
+https://github.com/dnrpcode/kmp-compose-todoapp/assets/109610332/c4b449fe-76ba-48b9-827e-e6b8648cf1d8
+
+
 
